@@ -1,0 +1,60 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+
+var PerfisController = require('./app/controllers/PerfisController')
+var UsuariosController = require('./app/controllers/UsuariosController')
+var PessoasController = require('./app/controllers/PessoasController')
+
+var swaggerUi = require('swagger-ui-express');
+var swaggerJSDoc = require("swagger-jsdoc");
+var PerfisController = require('./app/controllers/PerfisController');
+var UsuariosController = require('./app/controllers/UsuariosController');
+var ModeloProcessosController = require('./app/controllers/ModeloProcessosController');
+var ProcessosController = require('./app/controllers/ProcessosController');
+var RedesController = require('./app/controllers/RedesController');
+var EspecialidadesProfissionaisController = require('./app/controllers/EspecialidadesProfissionaisController');///
+var GruposMateriaisController = require('./app/controllers/GruposMateriaisController');///
+var TiposSolicitacoesController = require('./app/controllers/TiposSolicitacoesController');///
+var UnidadesMateriaisController = require('./app/controllers/UnidadesMateriaisController');///
+var StatusSolicitacoes = require('./app/controllers/StatusSolicitacoesController');///
+var TiposdeAcoesProfissionais = require('./app/controllers/TiposdeAcoesProfissionais');///
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+var swaggerDefinition = {
+    info: {
+      title: 'API Sistema SHRINERS',
+      version: '1.0.0',
+      description: 'Documentação da API do sistema Shriners',
+    },
+    host: 'localhost:3000',
+    basePath: '/',
+  };
+  var options = {
+    swaggerDefinition: swaggerDefinition,
+    apis: ['./app/controllers/*.js'],
+  };
+var swaggerSpec = swaggerJSDoc(options);
+app.get('/swagger.json', function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+app.use('/pessoas', PessoasController)
+app.use('/perfis', PerfisController);
+app.use('/usuarios', UsuariosController);
+app.use('/modeloprocessos', ModeloProcessosController);
+app.use('/processos', ProcessosController);
+app.use('/redes', RedesController);
+app.use('/especialidadesprofissional', EspecialidadesProfissionaisController);///
+app.use('/gruposmateriais', GruposMateriaisController);///
+app.use('/tipossolicitacoes', TiposSolicitacoesController);///
+app.use('/unidadesmateriais', UnidadesMateriaisController);///
+app.use('/statussolicitacao', StatusSolicitacoes);///
+app.use('/tiposdeacaoprofissional', TiposdeAcoesProfissionais);///
+
+app.listen(3000)
